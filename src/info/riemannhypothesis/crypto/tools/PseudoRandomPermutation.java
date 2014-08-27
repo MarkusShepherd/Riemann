@@ -1,6 +1,6 @@
 package info.riemannhypothesis.crypto.tools;
 
-public abstract class PseudoRandomPermutation extends PseudoRandomFunction {
+public abstract class PseudoRandomPermutation extends PseudoRandomFunction implements Cipher {
 
 	public final int blockLength;
 
@@ -9,6 +9,6 @@ public abstract class PseudoRandomPermutation extends PseudoRandomFunction {
 		this.blockLength = blockLength;
 	}
 
-	public abstract ByteSequence decrypt(ByteSequence key, ByteSequence output);
+	public abstract ByteSequence decrypt(ByteSequence output);
 
 }

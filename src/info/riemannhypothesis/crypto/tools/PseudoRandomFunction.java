@@ -12,6 +12,6 @@ public abstract class PseudoRandomFunction {
 		this.outputLength = outputLength;
 	}
 
-	public abstract ByteSequence encrypt(ByteSequence key, ByteSequence input);
+	public abstract ByteSequence encrypt(ByteSequence input);
 
 }

@@ -1,6 +1,12 @@
 package info.riemannhypothesis.crypto.tools;
 
-import java.util.Arrays;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author Markus Schepke
@@ -91,6 +97,7 @@ public class DES extends BlockCipher {
             0, 15, 6, 12, 10, 9, 13, 0, 15, 3, 3, 5, 5, 6, 8, 11 })        };
 
     private static boolean                                   strict         = false;
+    private final FeistelNetwork                             fn;
 
     public DES(ByteSequence key) {
         super(8, key);
@@ -99,11 +106,6 @@ public class DES extends BlockCipher {
             throw new IllegalArgumentException();
         }
 
-    }
-
-    @Override
-    public ByteSequence encrypt(ByteSequence key, ByteSequence input) {
-
         ByteSequence[] keys = keyExpansion(key);
 
         @SuppressWarnings("unchecked")
@@ -113,25 +115,19 @@ public class DES extends BlockCipher {
             functions[i] = feistelFunction(keys[i]);
         }
 
-        FeistelNetwork fn = new FeistelNetwork(functions);
+        fn = new FeistelNetwork(functions);
+
+    }
+
+    @Override
+    public ByteSequence encrypt(ByteSequence input) {
 
         return FP.apply(fn.encrypt(IP.apply(input)));
 
     }
 
     @Override
-    public ByteSequence decrypt(ByteSequence key, ByteSequence output) {
-
-        ByteSequence[] keys = keyExpansion(key);
-
-        @SuppressWarnings("unchecked")
-        Function<ByteSequence, ByteSequence>[] functions = (Function<ByteSequence, ByteSequence>[]) new Function<?, ?>[keys.length];
-
-        for (int i = 0; i < functions.length; i++) {
-            functions[i] = feistelFunction(keys[i]);
-        }
-
-        FeistelNetwork fn = new FeistelNetwork(functions);
+    public ByteSequence decrypt(ByteSequence output) {
 
         return IP.apply(fn.decrypt(FP.apply(output)));
 
@@ -239,7 +235,9 @@ public class DES extends BlockCipher {
         };
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException,
+            IllegalBlockSizeException, BadPaddingException {
 
         /* int[] table = new int[] { 14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10,
          * 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 41, 52, 31, 37, 47, 55,
@@ -268,12 +266,23 @@ public class DES extends BlockCipher {
          * for (int i = 0; i < S.length; i++) { byte output = S[i].apply(input);
          * System.out.println(output); } */
 
-        DES des = new DES(b);
-        ByteSequence c = des.encrypt(b, b);
-        ByteSequence d = des.decrypt(b, c);
+        ByteSequence key = b;
+        ByteSequence message = b;
 
-        System.out.println(b.toNumString(2, " "));
-        System.out.println(c.toNumString(2, " "));
-        System.out.println(d.toNumString(2, " "));
+        DES des = new DES(key);
+        ByteSequence cipher = des.encrypt(message);
+        ByteSequence decrypted = des.decrypt(cipher);
+
+        System.out.println(message.toNumString(2, " "));
+        System.out.println(cipher.toNumString(2, " "));
+        System.out.println(decrypted.toNumString(2, " "));
+
+        javax.crypto.Cipher x = javax.crypto.Cipher.getInstance("DES");
+        final SecretKeySpec secretKey = new SecretKeySpec(key.getByteArray(),
+                "DES");
+        x.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encrypted = x.doFinal(message.getByteArray());
+        ByteSequence wrapper = new ByteSequence(encrypted);
+        System.out.println(wrapper.toNumString(2, " "));
     }
 }

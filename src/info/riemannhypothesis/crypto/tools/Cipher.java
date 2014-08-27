@@ -6,8 +6,8 @@ package info.riemannhypothesis.crypto.tools;
  */
 public interface Cipher {
 
-    public ByteSequence encrypt(ByteSequence key, ByteSequence input);
+    public ByteSequence encrypt(ByteSequence input);
 
-    public ByteSequence decrypt(ByteSequence key, ByteSequence output);
+    public ByteSequence decrypt(ByteSequence output);
 
 }

@@ -7,13 +7,15 @@ package info.riemannhypothesis.crypto.tools;
 public class StreamCipher implements Cipher {
 
     private final PseudoRandomGenerator prg;
+    private final ByteSequence          seed;
 
-    public StreamCipher(PseudoRandomGenerator prg) {
+    public StreamCipher(PseudoRandomGenerator prg, ByteSequence seed) {
         this.prg = prg;
+        this.seed = seed;
     }
 
     @Override
-    public ByteSequence encrypt(ByteSequence seed, ByteSequence input) {
+    public ByteSequence encrypt(ByteSequence input) {
         ByteSequence key = prg.random(seed);
         if (input.length() > key.length()) {
             throw new IllegalArgumentException(
@@ -23,8 +25,8 @@ public class StreamCipher implements Cipher {
     }
 
     @Override
-    public ByteSequence decrypt(ByteSequence seed, ByteSequence output) {
-        return encrypt(seed, output);
+    public ByteSequence decrypt(ByteSequence output) {
+        return encrypt(output);
     }
 
 }
