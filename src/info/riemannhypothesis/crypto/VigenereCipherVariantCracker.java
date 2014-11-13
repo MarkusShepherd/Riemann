@@ -18,12 +18,39 @@ public class VigenereCipherVariantCracker {
             0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758, 0.00978,
             0.02360, 0.00150, 0.01974, 0.00074     };
     public static final Set<Character> ALLOWED_CHAR = new HashSet<Character>(
-                                                            Arrays.asList(new Character[] {
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-            '.', ',', '/', '\\', '?', '!', ' ', ':', ';', '\'', '"', '(', ')' }));
+                                                            Arrays.asList('a',
+                                                                    'b', 'c',
+                                                                    'd', 'e',
+                                                                    'f', 'g',
+                                                                    'h', 'i',
+                                                                    'j', 'k',
+                                                                    'l', 'm',
+                                                                    'n', 'o',
+                                                                    'p', 'q',
+                                                                    'r', 's',
+                                                                    't', 'u',
+                                                                    'v', 'w',
+                                                                    'x', 'y',
+                                                                    'z', 'A',
+                                                                    'B', 'C',
+                                                                    'D', 'E',
+                                                                    'F', 'G',
+                                                                    'H', 'I',
+                                                                    'J', 'K',
+                                                                    'L', 'M',
+                                                                    'N', 'O',
+                                                                    'P', 'Q',
+                                                                    'R', 'S',
+                                                                    'T', 'U',
+                                                                    'V', 'W',
+                                                                    'X', 'Y',
+                                                                    'Z', '.',
+                                                                    ',', '/',
+                                                                    '\\', '?',
+                                                                    '!', ' ',
+                                                                    ':', ';',
+                                                                    '\'', '"',
+                                                                    '(', ')'));
 
     public static void main(String[] args) {
 
